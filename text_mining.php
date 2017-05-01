@@ -26,7 +26,7 @@
 	 * and store it into a bag of words
 	 * @param $sentence is a sentence that wants to be tokenized
 	 */
-	function Tokenizing($sentece) {
+	function Tokenizing($sentence) {
 		// using the global variable instead of local
 		global $words;
 
@@ -41,14 +41,14 @@
 
 	/**
 	 * A function to filtering a word that doesn't have a value
-	 * @param $stopwords is a path to the list of stopwords file
+	 * @param $stopwordsFile is a path to the list of stopwords file
 	 */
-	function Filtering($stopwords) {
+	function Filtering($stopwordsFile) {
 		// using the global variable instead of local
 		global $words;
 
 		// open stopword file
-		$file = file_get_contents($stopwords, FILE_USE_INCLUDE_PATH);
+		$file = file_get_contents($stopwordsFile, FILE_USE_INCLUDE_PATH);
 
 		// put stopword into an array
 		$stopwords = explode(',', $file);
@@ -83,11 +83,11 @@
 	/**
 	 * Constant
 	 */
-	const $csvFile = 'output.csv' // path to the csv file 
-	const $stopwords = 'stopwords.txt' // path to the stopwords file
+	$csvFile = 'source\output.csv'; // path to the csv file 
+	$stopwordsFile = 'source\stopwords.txt'; // path to the stopwords file
 
 	/**
-	 * Variables
+	 * Variable
 	 */
 	$words = []; // a bag of words
 
@@ -98,9 +98,26 @@
 	// open csv file and store in an array
 	$array = OpenCsv($csvFile);
 
-	// 
+	// tokenizing all message in array
 	foreach ($array as $line) {
-		$line[5] // get only the messages
+		Tokenizing($line[5]); // get only the messages
 	}
 
+	// filtering all words
+	Filtering($stopwordsFile);
+
+	// stemming all words
+	Stemming();
+
+	// show all preprocessed word
+	print_r($words);
+
+	// group and count same word in array
+	$vals = array_count_values($words);
+	echo '<br><br>Total of group: '.count($vals).'<br><br>';
+
+	// descending sort
+	asort($vals);
+	$desc_vals = array_reverse($vals);
+	print_r($desc_vals);
 ?>
