@@ -29,7 +29,7 @@
 	function Tokenizing($sentence) {
 		// using the global variable instead of local
 		global $words;
-
+		echo $sentence;
 		// tokenizing
 		$token = explode(' ', $sentence);
 
@@ -83,7 +83,7 @@
 	/**
 	 * Constant
 	 */
-	$csvFile = 'source\output.csv'; // path to the csv file 
+	$csvFile = 'source\chat.txt'; // path to the csv file 
 	$stopwordsFile = 'source\stopwords.txt'; // path to the stopwords file
 
 	/**
@@ -100,7 +100,9 @@
 
 	// tokenizing all message in array
 	foreach ($array as $line) {
-		Tokenizing($line[5]); // get only the messages
+		$kalimat = preg_replace('/[0-9]+/', '', $line[1]);
+		echo "data raw tokenize ".$line[0]."</br>";
+		Tokenizing($kalimat); // get only the messages
 	}
 
 	// filtering all words
@@ -120,4 +122,16 @@
 	asort($vals);
 	$desc_vals = array_reverse($vals);
 	print_r($desc_vals);
+	array_shift($desc_vals);
+	foreach ($desc_vals as $key => $data){
+		//echo "data ". $data;
+		
+		$font_size = ($data);
+		
+		//echo "<font size='".$font_size."'> ".$font_size." </font>";
+		
+		echo "<div style=\"font-size:".$font_size."\">".$key. " : " .$data."</div>";
+		
+	}
+	
 ?>
